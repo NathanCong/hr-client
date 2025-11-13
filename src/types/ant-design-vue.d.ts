@@ -11,8 +11,18 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AButton: typeof import('ant-design-vue/es')['Button']
     AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']
+    AForm: typeof import('ant-design-vue/es')['Form']
+    AFormItem: typeof import('ant-design-vue/es')['FormItem']
+    AInput: typeof import('ant-design-vue/es')['Input']
+    AModal: typeof import('ant-design-vue/es')['Modal']
+    ARangePicker: typeof import('ant-design-vue/es')['RangePicker']
+    ATable: typeof import('ant-design-vue/es')['Table']
+    ATextarea: typeof import('ant-design-vue/es')['Textarea']
+    GlobalForm: typeof import('./../components/GlobalForm/GlobalForm.vue')['default']
     GlobalHeader: typeof import('./../components/GlobalHeader/GlobalHeader.vue')['default']
+    GlobalTable: typeof import('./../components/GlobalTable/GlobalTable.vue')['default']
     LoadingMask: typeof import('./../components/LoadingMask.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

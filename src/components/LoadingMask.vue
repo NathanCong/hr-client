@@ -15,10 +15,11 @@ import { LoadingOutlined } from '@ant-design/icons-vue'
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 30px;
+  font-size: 38px;
 }
 </style>
