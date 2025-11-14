@@ -14,7 +14,7 @@
             <div class="table-buttons">
               <a-button type="primary" size="middle" @click="onAddEmployee">
                 <template #icon><PlusOutlined /></template>
-                添加员工
+                添加新员工
               </a-button>
             </div>
           </div>
@@ -30,7 +30,7 @@
         </template>
       </GlobalTable>
     </section>
-    <AddEmployeeModal ref="addEmployeeModalRef" />
+    <AddEmployeeModal ref="addEmployeeModalRef" @finish="onAddEmployeeFinish" />
   </div>
 </template>
 
@@ -45,7 +45,7 @@ import { notification } from 'ant-design-vue'
 import AddEmployeeModal from './components/AddEmployeeModal.vue'
 
 const tableLoading = ref(false)
-const dataSource = ref<Array<EmployeeListItem>>([])
+const dataSource = ref<EmployeeListItem[]>([])
 const total = ref(0)
 const addEmployeeModalRef = ref<InstanceType<typeof AddEmployeeModal>>()
 
@@ -53,16 +53,18 @@ async function getTableDataSource() {
   tableLoading.value = true
   try {
     const res = await getEmployeeList()
-    console.log('res', res)
-  } catch (err) {
-    if (err instanceof Error) {
-      notification.error({
-        message: '获取员工列表失败',
-        description: err.message
-      })
-    } else {
-      notification.error({ message: '获取员工列表失败' })
+    const { success, message, data } = res.data as GetEmployeeListResponse
+    if (!success) {
+      notification.error({ message: '获取失败', description: message })
+      return
     }
+    dataSource.value = data.list
+    total.value = data.total
+  } catch (err) {
+    notification.error({
+      message: '获取失败',
+      description: err instanceof Error ? err.message : undefined
+    })
   } finally {
     tableLoading.value = false
   }
@@ -70,6 +72,10 @@ async function getTableDataSource() {
 
 function onAddEmployee() {
   addEmployeeModalRef.value?.open()
+}
+
+function onAddEmployeeFinish() {
+  getTableDataSource()
 }
 
 onMounted(() => {

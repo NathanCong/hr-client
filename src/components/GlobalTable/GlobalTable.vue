@@ -81,16 +81,6 @@ withDefaults(
           height: 0;
         }
       }
-
-      table {
-        height: 100%;
-      }
-
-      .ant-table-expanded-row-fixed {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
     }
   }
 }

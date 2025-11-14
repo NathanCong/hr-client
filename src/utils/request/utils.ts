@@ -14,34 +14,8 @@ export function handleRequestFailure(error: AxiosError) {
   return Promise.reject(error)
 }
 
-/**
- * 判断响应是否为流式响应
- */
-function isStreamResponse(response: AxiosResponse) {
-  const contentType = response.headers['content-type']
-  return (
-    response.request.responseType === 'stream' ||
-    response.config.responseType === 'stream' ||
-    (contentType && contentType.includes('text/event-stream')) ||
-    (contentType && contentType.includes('application/octet-stream'))
-  )
-}
-
 export function handleResponseSuccess(response: AxiosResponse) {
-  // 流式响应不做处理
-  if (isStreamResponse(response)) {
-    return response.data
-  }
-  // json 响应处理
-  const { data, message, success } = response.data
-  // json 响应成功
-  if (success) {
-    return data
-  }
-  // json 响应失败
-  const error = new Error(message)
-  notification.error({ message: '服务响应异常', description: error.message })
-  return Promise.reject(error)
+  return response
 }
 
 function getErrorMessageFromStatus(status: number) {
