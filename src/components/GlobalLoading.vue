@@ -1,19 +1,24 @@
 <template>
   <div class="global-loading">
     <section class="loading-mask">
-      <a-spin size="large" tip="加载中..."></a-spin>
+      <a-spin :size="size" :tip="tip" :spinning="isLoading"></a-spin>
     </section>
     <slot></slot>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { SpinSize } from 'ant-design-vue/es/spin/Spin'
+
 withDefaults(
   defineProps<{
-    size?: string
+    size?: SpinSize
+    tip?: string
+    isLoading?: boolean
   }>(),
   {
-    size: 'default' // default | small | large
+    size: 'default', // default | small | large
+    isLoading: false
   }
 )
 </script>

@@ -20,7 +20,7 @@
     </section>
     <!-- 测试 GlobalLoading -->
     <section class="test-item test-loading">
-      <GlobalLoading>
+      <GlobalLoading size="default" tip="加载中..." :is-loading="true">
         <div :style="loadingDivStyle"></div>
       </GlobalLoading>
     </section>
