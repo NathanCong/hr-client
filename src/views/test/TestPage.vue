@@ -31,14 +31,22 @@
     <!-- 测试 CommonForm -->
     <section class="test-form">
       <CommonForm
-        layout="horizontal"
+        layout="vertical"
         :colon="true"
-        :col-number="4"
-        :label-col="{ span: 4 }"
-        :wrapper-col="{ span: 20 }"
+        :col-number="3"
+        :label-col="{ span: 24 }"
+        :wrapper-col="{ span: 24 }"
         :fields="fields"
         ref="commonFormRef"
       />
+      <section class="form-buttons">
+        <a-button type="default" style="margin-left: 8px" @click="onReset">
+          重置
+        </a-button>
+        <a-button type="primary" style="margin-left: 8px" @click="onSubmit">
+          提交
+        </a-button>
+      </section>
     </section>
   </div>
 </template>
@@ -61,37 +69,59 @@ const loadingDivStyle = ref({
 const fields: FieldItem[] = [
   {
     key: 'input',
-    type: 'input',
     name: 'input',
     label: 'Input',
-    placeholder: '请输入内容',
-    rules: [{ required: true, message: 'Input 不能为空' }]
+    type: 'input',
+    rules: [{ required: true, message: 'Input 不能为空' }],
+    options: {
+      placeholder: '请输入内容'
+    }
   },
   {
     key: 'textarea',
-    type: 'textarea',
     name: 'textarea',
     label: 'TextArea',
-    placeholder: '请输入内容',
-    rules: [{ required: true, message: 'TextArea 不能为空' }]
+    type: 'textarea',
+    rules: [{ required: true, message: 'TextArea 不能为空' }],
+    options: {
+      placeholder: '请输入内容',
+      height: '32px'
+    }
   },
   {
     key: 'dateRange',
-    type: 'dateRange',
     name: 'dateRange',
     label: 'DateRange',
-    placeholder: '请选择日期范围',
-    rules: [{ required: true, message: 'DateRange 不能为空' }]
+    type: 'dateRange',
+    rules: [{ required: true, message: 'DateRange 不能为空' }],
+    options: {
+      placeholder: '请选择日期范围'
+    }
   }
 ]
 
 const commonFormRef = ref()
+
+function onReset() {
+  commonFormRef.value.resetFields()
+}
+
+function onSubmit() {
+  commonFormRef.value
+    .submit()
+    .then((res: unknown) => {
+      console.log(res)
+    })
+    .catch((err: unknown) => {
+      console.warn(err)
+    })
+}
 </script>
 
 <style lang="less" scoped>
 .test {
   width: 100%;
-  height: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
 
@@ -114,6 +144,13 @@ const commonFormRef = ref()
     padding: 20px;
     background-color: #fff;
     margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+
+    .form-buttons {
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 }
 </style>

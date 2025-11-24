@@ -13,34 +13,42 @@
           <template v-for="fieldCol in fieldRow.fieldCols" :key="fieldCol.key">
             <a-col :span="colSpan">
               <a-form-item
-                v-for="field in fields"
-                :key="field.key"
-                :label="field.label"
-                :name="field.name"
-                :rules="field.rules"
+                :label="fieldCol.label"
+                :name="fieldCol.name"
+                :rules="fieldCol.rules"
               >
                 <!-- Input 组件 -->
-                <template v-if="field.type === 'input'">
+                <template v-if="fieldCol.type === 'input'">
                   <a-input
-                    v-model:value="formState[field.name]"
-                    :placeholder="field.placeholder"
+                    v-model:value="formState[fieldCol.name]"
+                    :placeholder="fieldCol.options?.placeholder"
+                    :style="{
+                      width: fieldCol.options?.width || '100%',
+                      height: fieldCol.options?.height || 'auto'
+                    }"
                     allowClear
                   />
                 </template>
                 <!-- Textarea 组件 -->
-                <template v-if="field.type === 'textarea'">
+                <template v-if="fieldCol.type === 'textarea'">
                   <a-textarea
-                    v-model:value="formState[field.name]"
-                    :placeholder="field.placeholder"
+                    v-model:value="formState[fieldCol.name]"
+                    :placeholder="fieldCol.options?.placeholder"
+                    :style="{
+                      width: fieldCol.options?.width || '100%',
+                      height: fieldCol.options?.height || 'auto'
+                    }"
                     allowClear
-                    style="width: 100%; height: 200px"
                   />
                 </template>
                 <!-- DateRange 组件 -->
-                <template v-if="field.type === 'dateRange'">
+                <template v-if="fieldCol.type === 'dateRange'">
                   <a-range-picker
-                    v-model:value="formState[field.name]"
-                    style="width: 100%"
+                    v-model:value="formState[fieldCol.name]"
+                    :style="{
+                      width: fieldCol.options?.width || '100%',
+                      height: fieldCol.options?.height || 'auto'
+                    }"
                     allowClear
                   />
                 </template>
@@ -103,7 +111,6 @@ const formFieldRows = computed(() => {
   })
   return newFieldRows
 })
-console.log('formFieldRows', formFieldRows.value)
 
 const colSpan = computed(() => {
   if (formFieldRows.value[0]) {
@@ -111,7 +118,6 @@ const colSpan = computed(() => {
   }
   return 24
 })
-console.log('colSpan', colSpan)
 
 const commonFormRef = ref<FormInstance>()
 

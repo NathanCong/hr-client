@@ -1,12 +1,16 @@
 interface FieldItem {
   key: string
-  type: 'input' | 'textarea' | 'dateRange'
   name: string
   label: string
+  type: 'input' | 'textarea' | 'dateRange'
   value?: never
   defaultValue?: never
-  placeholder?: string
   rules?: Array<{ required?: boolean; message?: string }>
+  options?: {
+    placeholder?: string
+    width?: string
+    height?: string
+  }
 }
 
 interface FieldRow {
