@@ -1,7 +1,7 @@
 <template>
   <div class="test">
     <!-- 测试 GlobalHeader -->
-    <section class="test-item test-header">
+    <section class="test-header">
       <GlobalHeader
         :show-logo="true"
         :logo-src="LogoSVG"
@@ -19,16 +19,22 @@
       </GlobalHeader>
     </section>
     <!-- 测试 GlobalLoading -->
-    <section class="test-item test-loading">
+    <section class="test-loading">
       <GlobalLoading size="default" tip="加载中..." :is-loading="true">
         <div :style="loadingDivStyle"></div>
       </GlobalLoading>
+    </section>
+    <!-- 测试 GlobalEmpty -->
+    <section class="test-empty">
+      <GlobalEmpty />
     </section>
   </div>
 </template>
 
 <script lang="ts" setup>
 import GlobalHeader from '@/components/GlobalHeader.vue'
+import GlobalLoading from '@/components/GlobalLoading.vue'
+import GlobalEmpty from '@/components/GlobalEmpty.vue'
 import LogoSVG from './assets/images/logo.svg'
 import { ref } from 'vue'
 
@@ -47,17 +53,16 @@ const loadingDivStyle = ref({
   display: flex;
   flex-direction: column;
 
-  &.test-item {
-    margin-top: 10px;
-
-    &:first-child {
-      margin-bottom: 0;
-    }
-  }
-
   .test-header {
     width: 100%;
     height: 60px;
+  }
+
+  .test-empty {
+    width: 100%;
+    height: 200px;
+    background-color: #fff;
+    margin-top: 10px;
   }
 }
 </style>

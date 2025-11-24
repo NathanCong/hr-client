@@ -13,6 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AButton: typeof import('ant-design-vue/es')['Button']
     AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']
+    AEmpty: typeof import('ant-design-vue/es')['Empty']
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
@@ -21,6 +22,7 @@ declare module 'vue' {
     ASpin: typeof import('ant-design-vue/es')['Spin']
     ATable: typeof import('ant-design-vue/es')['Table']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
+    GlobalEmpty: typeof import('./../components/GlobalEmpty.vue')['default']
     GlobalForm: typeof import('./../components/GlobalForm/GlobalForm.vue')['default']
     GlobalHeader: typeof import('./../components/GlobalHeader/GlobalHeader.vue')['default']
     GlobalLoading: typeof import('./../components/GlobalLoading.vue')['default']
