@@ -80,11 +80,11 @@ watch(
 )
 
 defineExpose({
-  getFormState: () => formState,
-  setFormState: (data: FormState) => {
+  getFields: () => formState,
+  setFields: (data: FormState) => {
     Object.assign(formState, data)
   },
-  reset: () => {
+  resetFields: () => {
     commonFormRef.value?.resetFields()
   },
   submit: () => commonFormRef.value?.validateFields()
