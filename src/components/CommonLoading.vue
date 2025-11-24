@@ -8,11 +8,9 @@
 </template>
 
 <script lang="ts" setup>
-import { SpinSize } from 'ant-design-vue/es/spin/Spin'
-
 withDefaults(
   defineProps<{
-    size?: SpinSize
+    size?: 'default' | 'small' | 'large'
     tip?: string
     isLoading?: boolean
   }>(),
