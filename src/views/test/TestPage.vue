@@ -1,8 +1,8 @@
 <template>
   <div class="test">
-    <!-- 测试 GlobalHeader -->
+    <!-- 测试 CommonHeader -->
     <section class="test-header">
-      <GlobalHeader
+      <CommonHeader
         :show-logo="true"
         :logo-src="LogoSVG"
         :show-title="true"
@@ -16,7 +16,7 @@
             <a-button type="primary">测试</a-button>
           </div>
         </template>
-      </GlobalHeader>
+      </CommonHeader>
     </section>
     <!-- 测试 GlobalLoading -->
     <section class="test-loading">
@@ -28,11 +28,12 @@
     <section class="test-empty">
       <GlobalEmpty />
     </section>
+    <!-- 测试 GlobalForm -->
   </div>
 </template>
 
 <script lang="ts" setup>
-import GlobalHeader from '@/components/GlobalHeader.vue'
+import CommonHeader from '@/components/CommonHeader.vue'
 import GlobalLoading from '@/components/GlobalLoading.vue'
 import GlobalEmpty from '@/components/GlobalEmpty.vue'
 import LogoSVG from './assets/images/logo.svg'

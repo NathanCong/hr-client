@@ -1,5 +1,5 @@
 <template>
-  <div class="global-header" :style="{ backgroundColor: bgColor }">
+  <div class="common-header" :style="{ backgroundColor: bgColor }">
     <section class="header-left">
       <template v-if="showLogo && logoSrc">
         <img class="header-logo" :src="logoSrc" />
@@ -46,7 +46,7 @@ withDefaults(
 </script>
 
 <style lang="less" scoped>
-.global-header {
+.common-header {
   width: 100%;
   height: 100%;
   min-height: 48px;
