@@ -1,5 +1,5 @@
 <template>
-  <div class="global-loading">
+  <div class="common-loading">
     <section class="loading-mask">
       <a-spin :size="size" :tip="tip" :spinning="isLoading"></a-spin>
     </section>
@@ -24,7 +24,7 @@ withDefaults(
 </script>
 
 <style lang="less" scoped>
-.global-loading {
+.common-loading {
   width: auto;
   height: auto;
   position: relative;

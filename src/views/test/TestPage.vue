@@ -18,11 +18,11 @@
         </template>
       </CommonHeader>
     </section>
-    <!-- 测试 GlobalLoading -->
+    <!-- 测试 CommonLoading -->
     <section class="test-loading">
-      <GlobalLoading size="default" tip="加载中..." :is-loading="true">
+      <CommonLoading size="default" tip="加载中..." :is-loading="true">
         <div :style="loadingDivStyle"></div>
-      </GlobalLoading>
+      </CommonLoading>
     </section>
     <!-- 测试 GlobalEmpty -->
     <section class="test-empty">
@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
 import CommonHeader from '@/components/CommonHeader.vue'
-import GlobalLoading from '@/components/GlobalLoading.vue'
+import CommonLoading from '@/components/CommonLoading.vue'
 import GlobalEmpty from '@/components/GlobalEmpty.vue'
 import LogoSVG from './assets/images/logo.svg'
 import { ref } from 'vue'

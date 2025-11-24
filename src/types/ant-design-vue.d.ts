@@ -23,6 +23,7 @@ declare module 'vue' {
     ATable: typeof import('ant-design-vue/es')['Table']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
     CommonHeader: typeof import('./../components/CommonHeader.vue')['default']
+    CommonLoading: typeof import('./../components/CommonLoading.vue')['default']
     GlobalEmpty: typeof import('./../components/GlobalEmpty.vue')['default']
     GlobalForm: typeof import('./../components/GlobalForm/GlobalForm.vue')['default']
     GlobalHeader: typeof import('./../components/GlobalHeader/GlobalHeader.vue')['default']
