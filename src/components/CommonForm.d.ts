@@ -9,6 +9,11 @@ interface FieldItem {
   rules?: Array<{ required?: boolean; message?: string }>
 }
 
+interface FieldRow {
+  rowKey: string
+  fieldCols: Array<FieldItem>
+}
+
 interface FormState {
   [key: string]: undefined | never
 }
