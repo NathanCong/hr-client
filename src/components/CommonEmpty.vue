@@ -1,11 +1,11 @@
 <template>
-  <div class="global-empty">
+  <div class="common-empty">
     <a-empty />
   </div>
 </template>
 
 <style lang="less" scoped>
-.global-empty {
+.common-empty {
   width: 100%;
   height: 100%;
   display: flex;

@@ -22,6 +22,7 @@ declare module 'vue' {
     ASpin: typeof import('ant-design-vue/es')['Spin']
     ATable: typeof import('ant-design-vue/es')['Table']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
+    CommonEmpty: typeof import('./../components/CommonEmpty.vue')['default']
     CommonHeader: typeof import('./../components/CommonHeader.vue')['default']
     CommonLoading: typeof import('./../components/CommonLoading.vue')['default']
     GlobalEmpty: typeof import('./../components/GlobalEmpty.vue')['default']

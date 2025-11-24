@@ -24,9 +24,9 @@
         <div :style="loadingDivStyle"></div>
       </CommonLoading>
     </section>
-    <!-- 测试 GlobalEmpty -->
+    <!-- 测试 CommonEmpty -->
     <section class="test-empty">
-      <GlobalEmpty />
+      <CommonEmpty />
     </section>
     <!-- 测试 GlobalForm -->
   </div>
@@ -35,7 +35,7 @@
 <script lang="ts" setup>
 import CommonHeader from '@/components/CommonHeader.vue'
 import CommonLoading from '@/components/CommonLoading.vue'
-import GlobalEmpty from '@/components/GlobalEmpty.vue'
+import CommonEmpty from '@/components/CommonEmpty.vue'
 import LogoSVG from './assets/images/logo.svg'
 import { ref } from 'vue'
 
