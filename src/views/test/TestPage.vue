@@ -1,6 +1,7 @@
 <template>
   <div class="test">
-    <section class="test-header">
+    <!-- 测试 GlobalHeader -->
+    <section class="test-item test-header">
       <GlobalHeader
         :show-logo="true"
         :logo-src="LogoSVG"
@@ -17,12 +18,26 @@
         </template>
       </GlobalHeader>
     </section>
+    <!-- 测试 GlobalLoading -->
+    <section class="test-item test-loading">
+      <GlobalLoading>
+        <div :style="loadingDivStyle"></div>
+      </GlobalLoading>
+    </section>
   </div>
 </template>
 
 <script lang="ts" setup>
 import GlobalHeader from '@/components/GlobalHeader.vue'
 import LogoSVG from './assets/images/logo.svg'
+import { ref } from 'vue'
+
+const loadingDivStyle = ref({
+  width: '100%',
+  height: '200px',
+  backgroundColor: '#fff',
+  marginTop: '10px'
+})
 </script>
 
 <style lang="less" scoped>
@@ -30,6 +45,15 @@ import LogoSVG from './assets/images/logo.svg'
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
+
+  &.test-item {
+    margin-top: 10px;
+
+    &:first-child {
+      margin-bottom: 0;
+    }
+  }
 
   .test-header {
     width: 100%;
