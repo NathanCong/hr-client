@@ -12,16 +12,14 @@
         :show-actions="true"
       >
         <template #actions>
-          <div class="header-actions">
-            <a-button type="primary">测试</a-button>
-          </div>
+          <a-button type="primary">测试</a-button>
         </template>
       </CommonHeader>
     </section>
     <!-- 测试 CommonLoading -->
     <section class="test-loading">
       <CommonLoading size="default" tip="加载中..." :is-loading="true">
-        <div :style="loadingDivStyle"></div>
+        <div class="loading-inner"></div>
       </CommonLoading>
     </section>
     <!-- 测试 CommonEmpty -->
@@ -36,7 +34,7 @@
         :col-number="3"
         :label-col="{ span: 24 }"
         :wrapper-col="{ span: 24 }"
-        :fields="fields"
+        :fields="FORM_FIELDS"
         ref="commonFormRef"
       />
       <section class="form-buttons">
@@ -48,59 +46,45 @@
         </a-button>
       </section>
     </section>
+    <!-- 测试 CommonTable -->
+    <section class="test-table">
+      <CommonTable
+        title="测试表格"
+        :columns="TABLE_COLUMNS"
+        :data-source="dataSource"
+      >
+        <template #header-actions>
+          <a-button type="primary" style="margin-left: 8px">刷新列表</a-button>
+          <a-button type="primary" style="margin-left: 8px">新增项目</a-button>
+        </template>
+      </CommonTable>
+    </section>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref, computed } from 'vue'
 import CommonHeader from '@/components/CommonHeader.vue'
 import CommonLoading from '@/components/CommonLoading.vue'
 import CommonEmpty from '@/components/CommonEmpty.vue'
 import CommonForm from '@/components/CommonForm.vue'
+import CommonTable from '@/components/CommonTable.vue'
 import LogoSVG from './assets/images/logo.svg'
-import { ref } from 'vue'
-
-const loadingDivStyle = ref({
-  width: '100%',
-  height: '200px',
-  backgroundColor: '#fff',
-  marginTop: '10px'
-})
-
-const fields: FieldItem[] = [
-  {
-    key: 'input',
-    name: 'input',
-    label: 'Input',
-    type: 'input',
-    rules: [{ required: true, message: 'Input 不能为空' }],
-    options: {
-      placeholder: '请输入内容'
-    }
-  },
-  {
-    key: 'textarea',
-    name: 'textarea',
-    label: 'TextArea',
-    type: 'textarea',
-    rules: [{ required: true, message: 'TextArea 不能为空' }],
-    options: {
-      placeholder: '请输入内容',
-      height: '32px'
-    }
-  },
-  {
-    key: 'dateRange',
-    name: 'dateRange',
-    label: 'DateRange',
-    type: 'dateRange',
-    rules: [{ required: true, message: 'DateRange 不能为空' }],
-    options: {
-      placeholder: '请选择日期范围'
-    }
-  }
-]
+import { FORM_FIELDS, TABLE_COLUMNS } from './constants/index'
 
 const commonFormRef = ref()
+
+const dataSource = computed(() => {
+  return new Array(100).fill(null).map(() => {
+    const newItem: { [key: string]: unknown } = {}
+    TABLE_COLUMNS.forEach((item: ColumnItem) => {
+      if (typeof item.dataIndex === 'string') {
+        newItem[item.dataIndex] = item.key
+      }
+    })
+    return newItem
+  })
+})
 
 function onReset() {
   commonFormRef.value.resetFields()
@@ -130,6 +114,16 @@ function onSubmit() {
     height: 60px;
   }
 
+  .test-loading {
+    margin-top: 10px;
+
+    .loading-inner {
+      width: 100%;
+      height: 200px;
+      background-color: #fff;
+    }
+  }
+
   .test-empty {
     width: 100%;
     height: 200px;
@@ -151,6 +145,13 @@ function onSubmit() {
       display: flex;
       justify-content: flex-end;
     }
+  }
+
+  .test-table {
+    width: 100%;
+    height: 300px;
+    background-color: #fff;
+    margin-top: 10px;
   }
 }
 </style>

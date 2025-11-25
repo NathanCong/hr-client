@@ -28,6 +28,7 @@ declare module 'vue' {
     CommonForm: typeof import('./../components/CommonForm.vue')['default']
     CommonHeader: typeof import('./../components/CommonHeader.vue')['default']
     CommonLoading: typeof import('./../components/CommonLoading.vue')['default']
+    CommonTable: typeof import('./../components/CommonTable.vue')['default']
     GlobalEmpty: typeof import('./../components/GlobalEmpty.vue')['default']
     GlobalForm: typeof import('./../components/GlobalForm/GlobalForm.vue')['default']
     GlobalHeader: typeof import('./../components/GlobalHeader/GlobalHeader.vue')['default']

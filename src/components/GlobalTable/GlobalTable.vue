@@ -1,6 +1,8 @@
 <template>
   <div class="global-table">
-    <section class="table-header"><slot name="header"></slot></section>
+    <section class="table-header">
+      <slot name="header"></slot>
+    </section>
     <section class="table-mainer">
       <a-table
         :columns="columns"
