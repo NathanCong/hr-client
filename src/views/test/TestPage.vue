@@ -62,8 +62,12 @@
         @page-change="onPageChange"
       >
         <template #header-actions>
-          <a-button type="primary" style="margin-left: 8px">刷新列表</a-button>
-          <a-button type="primary" style="margin-left: 8px">新增项目</a-button>
+          <a-button type="primary" style="margin-left: 8px" :disabled="loading"
+            >刷新列表</a-button
+          >
+          <a-button type="primary" style="margin-left: 8px" :disabled="loading"
+            >新增项目</a-button
+          >
         </template>
         <template #thead-cell="{ title }">
           <span class="thead-cell">{{ title }}</span>
@@ -147,7 +151,7 @@ function getDataSource(
 
 async function onPageChange(pageNum: number) {
   loading.value = true
-  dataSource.value = []
+  // dataSource.value = []
   try {
     const { pageSize } = pagination.value
     const { list, total } = await getDataSource(pageNum, pageSize)

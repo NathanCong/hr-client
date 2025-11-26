@@ -16,6 +16,7 @@
             :data-source="dataSource"
             :scroll="{ x: tableScrollX, y: tableScrollY }"
             :pagination="false"
+            ref="tableRef"
           >
             <!-- 表头单元格 -->
             <template #headerCell="{ title, column }">
@@ -43,7 +44,7 @@
                 :show-size-changer="false"
                 :show-total="(total: number) => `共 ${total} 条`"
                 :total="pagination.total"
-                @change="(pageNum: number) => emit('pageChange', pageNum)"
+                @change="onChange"
               />
             </section>
           </template>
@@ -105,7 +106,9 @@ watch(
     }
     // 有固定列，计算滚动宽度（总宽 + 固定列宽度）
     nextTick(() => {
+      // 获取 tableWrapper 元素宽度
       const tableWrapperWidth = getElementWidth(tableWrapperRef.value)
+      // 设置 tableScrollX
       tableScrollX.value = tableWrapperWidth + fixedWidth
     })
   },
@@ -126,23 +129,32 @@ watch(
     nextTick(() => {
       // 获取 tableWrapper 元素高度
       const tableWrapperHeight = getElementHeight(tableWrapperRef.value)
-      console.log('tableWrapperHeight', tableWrapperHeight)
       // 获取 tableThead 元素高度
       const tableTheadElement = getElementByClassName('ant-table-thead')
       const tableTheadHeight = getElementHeight(tableTheadElement)
-      console.log('tableTheadHeight', tableTheadHeight)
       // 获取 tablePagination 元素高度
       const tablePaginationElement = getElementByClassName('table-pagination')
       const tablePaginationHeight = getElementHeight(tablePaginationElement)
-      console.log('tablePaginationHeight', tablePaginationHeight)
+      // 设置 tableScrollY
       tableScrollY.value =
         tableWrapperHeight - tableTheadHeight - tablePaginationHeight
+      // 自动滚动到顶部
+      const tableBodyElement = getElementByClassName('ant-table-body')
+      if (tableBodyElement) {
+        tableBodyElement.scrollTop = 0
+      }
     })
   },
   { immediate: true }
 )
 
+const tableRef = ref(null)
+
 const emit = defineEmits(['pageChange'])
+
+function onChange(pageNum: number) {
+  emit('pageChange', pageNum)
+}
 </script>
 
 <style lang="less" scoped>
