@@ -3,6 +3,6 @@ interface ColumnItem {
   dataIndex?: string | string[]
   title: string
   fixed?: 'left' | 'right' | boolean
-  width?: string | number
+  width?: number
   customRender?: function
 }

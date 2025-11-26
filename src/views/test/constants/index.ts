@@ -98,6 +98,7 @@ export const TABLE_COLUMNS: ColumnItem[] = [
   {
     key: 'actions',
     title: 'Actions',
-    fixed: 'right'
+    fixed: 'right',
+    width: 200
   }
 ]

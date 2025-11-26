@@ -75,6 +75,7 @@ import { FORM_FIELDS, TABLE_COLUMNS } from './constants/index'
 const commonFormRef = ref()
 
 const dataSource = computed(() => {
+  // return []
   return new Array(100).fill(null).map(() => {
     const newItem: { [key: string]: unknown } = {}
     TABLE_COLUMNS.forEach((item: ColumnItem) => {
@@ -149,7 +150,9 @@ function onSubmit() {
 
   .test-table {
     width: 100%;
-    height: 300px;
+    box-sizing: border-box;
+    padding: 0 20px;
+    height: 500px;
     background-color: #fff;
     margin-top: 10px;
   }

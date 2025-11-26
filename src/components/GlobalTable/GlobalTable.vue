@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 withDefaults(
   defineProps<{
-    columns?: Array<TableColumn>
+    columns?: Array<ColumnItem>
     dataSource?: unknown[]
     total?: number
   }>(),

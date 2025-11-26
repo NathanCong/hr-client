@@ -12,16 +12,27 @@
       <a-table
         :columns="columns"
         :data-source="dataSource"
-        :scroll="{ y: tableScrollY }"
+        :scroll="{ x: tableScrollX, y: tableScrollY }"
       ></a-table>
+      <template v-if="dataSource.length < 1">
+        <section class="no-data">
+          <CommonEmpty />
+        </section>
+      </template>
     </section>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
+import CommonEmpty from './CommonEmpty.vue'
+import {
+  getElementWidth,
+  getElementHeight,
+  getElementByClassName
+} from '@/utils/element'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title?: string
     columns?: ColumnItem[]
@@ -36,29 +47,36 @@ withDefaults(
 
 const tableWrapperRef = ref<HTMLElement | null>(null)
 
+const tableScrollX = computed(() => {
+  let fixedWidth = 0
+  props.columns.forEach((column) => {
+    if (column.fixed) {
+      fixedWidth += column.width || 0
+    }
+  })
+  if (fixedWidth > 0) {
+    // 获取 tableWrapper 元素宽度
+    const tableWrapperWidth = getElementWidth(tableWrapperRef.value)
+    // 返回计算后的滚动宽度（总宽 + 固定列宽度）
+    return tableWrapperWidth + fixedWidth
+  }
+  return 0
+})
+
 const tableScrollY = computed(() => {
+  // 没数据直接返回0
+  if (props.dataSource.length < 1) {
+    return 0
+  }
   // 获取 tableWrapper 元素高度
-  const tableWrapperElement = tableWrapperRef.value
-  const tableWrapperHeight = tableWrapperElement
-    ? tableWrapperElement.offsetHeight
-    : 0
+  const tableWrapperHeight = getElementHeight(tableWrapperRef.value)
   // 获取 tableThead 元素高度
-  const tableTheadElement: HTMLElement | null =
-    document.querySelector('.ant-table-thead')
-  const tableTheadHeight = tableTheadElement
-    ? tableTheadElement.offsetHeight
-    : 0
+  const tableTheadElement = getElementByClassName('ant-table-thead')
+  const tableTheadHeight = getElementHeight(tableTheadElement)
   // 获取 tablePagination 元素高度
-  const tablePaginationElement: HTMLElement | null = document.querySelector(
-    '.ant-table-pagination'
-  )
-  const tablePaginationHeight = tablePaginationElement
-    ? tablePaginationElement.offsetHeight
-    : 0
-  console.log(
-    'scrollY',
-    tableWrapperHeight - tableTheadHeight - tablePaginationHeight
-  )
+  const tablePaginationElement = getElementByClassName('ant-table-pagination')
+  const tablePaginationHeight = getElementHeight(tablePaginationElement)
+  // 返回计算后的滚动高度（总高 - 表头高度 - 分页高度）
   return tableWrapperHeight - tableTheadHeight - tablePaginationHeight
 })
 </script>
@@ -75,7 +93,7 @@ const tableScrollY = computed(() => {
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
-    padding: 20px;
+    padding: 16px 0;
 
     .header-title {
       font-size: 16px;
@@ -86,6 +104,12 @@ const tableScrollY = computed(() => {
 
   .table-wrapper {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .no-data {
+      flex: 1;
+    }
   }
 }
 </style>
