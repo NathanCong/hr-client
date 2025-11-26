@@ -1,8 +1,16 @@
 <template>
-  <div class="common-loading">
-    <section class="loading-mask">
-      <a-spin :size="size" :tip="tip" :spinning="isLoading"></a-spin>
-    </section>
+  <div
+    class="common-loading"
+    :style="{
+      width: mode === 'full' ? '100%' : 'auto',
+      height: mode === 'full' ? '100%' : 'auto'
+    }"
+  >
+    <template v-if="isLoading">
+      <section class="loading-mask">
+        <a-spin :spinning="isLoading" :size="size" :tip="tip"></a-spin>
+      </section>
+    </template>
     <slot></slot>
   </div>
 </template>
@@ -10,21 +18,21 @@
 <script lang="ts" setup>
 withDefaults(
   defineProps<{
+    mode: 'full' | 'auto'
+    isLoading?: boolean
     size?: 'default' | 'small' | 'large'
     tip?: string
-    isLoading?: boolean
   }>(),
   {
-    size: 'default', // default | small | large
-    isLoading: false
+    mode: 'full',
+    isLoading: false,
+    size: 'default'
   }
 )
 </script>
 
 <style lang="less" scoped>
 .common-loading {
-  width: auto;
-  height: auto;
   position: relative;
 
   .loading-mask {
