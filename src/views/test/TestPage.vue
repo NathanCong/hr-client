@@ -18,7 +18,12 @@
     </section>
     <!-- 测试 CommonLoading -->
     <section class="test-loading">
-      <CommonLoading size="default" tip="加载中..." :is-loading="true">
+      <CommonLoading
+        mode="auto"
+        :is-loading="true"
+        size="default"
+        tip="加载中..."
+      >
         <div class="loading-inner"></div>
       </CommonLoading>
     </section>
@@ -48,42 +53,34 @@
     </section>
     <!-- 测试 CommonTable -->
     <section class="test-table">
-      <CommonLoading :is-loading="loading">
-        <div class="loading-inner">
-          <CommonTable
-            title="测试表格"
-            :columns="TABLE_COLUMNS"
-            :data-source="dataSource"
-            :pagination="pagination"
-            @page-change="onPageChange"
-          >
-            <template #header-actions>
-              <a-button type="primary" style="margin-left: 8px"
-                >刷新列表</a-button
-              >
-              <a-button type="primary" style="margin-left: 8px"
-                >新增项目</a-button
-              >
+      <CommonTable
+        title="测试表格"
+        :columns="TABLE_COLUMNS"
+        :data-source="dataSource"
+        :pagination="pagination"
+        @page-change="onPageChange"
+      >
+        <template #header-actions>
+          <a-button type="primary" style="margin-left: 8px">刷新列表</a-button>
+          <a-button type="primary" style="margin-left: 8px">新增项目</a-button>
+        </template>
+        <template #thead-cell="{ title }">
+          <span class="thead-cell">{{ title }}</span>
+        </template>
+        <template #tbody-cell="{ column, text }">
+          <span class="tbody-cell">
+            <template v-if="column.key === 'actions'">
+              <a-button type="link">查看</a-button>
+              <a-button type="link">编辑</a-button>
+              <a-button type="link">删除</a-button>
             </template>
-            <template #thead-cell="{ title }">
-              <span class="thead-cell">{{ title }}</span>
+            <template v-else-if="column.key === 'column5'">
+              {{ dayjs(text).format('YYYY-MM-DD HH:mm:ss') }}
             </template>
-            <template #tbody-cell="{ column, text }">
-              <span class="tbody-cell">
-                <template v-if="column.key === 'actions'">
-                  <a-button type="link">查看</a-button>
-                  <a-button type="link">编辑</a-button>
-                  <a-button type="link">删除</a-button>
-                </template>
-                <template v-else-if="column.key === 'column5'">
-                  {{ dayjs(text).format('YYYY-MM-DD HH:mm:ss') }}
-                </template>
-                <template v-else>{{ text }}</template>
-              </span>
-            </template>
-          </CommonTable>
-        </div>
-      </CommonLoading>
+            <template v-else>{{ text }}</template>
+          </span>
+        </template>
+      </CommonTable>
     </section>
   </div>
 </template>
@@ -227,21 +224,18 @@ function onSubmit() {
   }
 
   .test-table {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 20px;
+    height: 500px;
+    background-color: #fff;
     margin-top: 10px;
 
-    .loading-inner {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 0 20px;
-      height: 500px;
-      background-color: #fff;
-
-      .thead-cell,
-      .tbody-cell {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+    .thead-cell,
+    .tbody-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }

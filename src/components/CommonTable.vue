@@ -9,42 +9,44 @@
     </section>
     <!-- 表格主体 -->
     <section class="table-wrapper" ref="tableWrapperRef">
-      <a-table
-        :columns="columns"
-        :data-source="dataSource"
-        :scroll="{ x: tableScrollX, y: tableScrollY }"
-        :pagination="{
-          showQuickJumper: false,
-          showSizeChanger: false,
-          showTotal: (total) => `共 ${total} 条`,
-          current: pagination.pageNum,
-          pageSize: pagination.pageSize,
-          total: pagination.total,
-          onChange: (pageNum) => emit('pageChange', pageNum)
-        }"
-      >
-        <!-- 表头单元格 -->
-        <template #headerCell="{ title, column }">
-          <slot name="thead-cell" :title="title" :column="column"></slot>
+      <CommonLoading>
+        <a-table
+          :columns="columns"
+          :data-source="dataSource"
+          :scroll="{ x: tableScrollX, y: tableScrollY }"
+          :pagination="{
+            showQuickJumper: false,
+            showSizeChanger: false,
+            showTotal: (total) => `共 ${total} 条`,
+            current: pagination.pageNum,
+            pageSize: pagination.pageSize,
+            total: pagination.total,
+            onChange: (pageNum) => emit('pageChange', pageNum)
+          }"
+        >
+          <!-- 表头单元格 -->
+          <template #headerCell="{ title, column }">
+            <slot name="thead-cell" :title="title" :column="column"></slot>
+          </template>
+          <!-- 列表单元格 -->
+          <template #bodyCell="{ text, value, record, index, column }">
+            <slot
+              name="tbody-cell"
+              :text="text"
+              :value="value"
+              :record="record"
+              :index="index"
+              :column="column"
+            ></slot>
+          </template>
+        </a-table>
+        <!-- 空数据状态 -->
+        <template v-if="dataSource.length < 1">
+          <section class="no-data">
+            <CommonEmpty />
+          </section>
         </template>
-        <!-- 列表单元格 -->
-        <template #bodyCell="{ text, value, record, index, column }">
-          <slot
-            name="tbody-cell"
-            :text="text"
-            :value="value"
-            :record="record"
-            :index="index"
-            :column="column"
-          ></slot>
-        </template>
-      </a-table>
-      <!-- 空数据状态 -->
-      <template v-if="dataSource.length < 1">
-        <section class="no-data">
-          <CommonEmpty />
-        </section>
-      </template>
+      </CommonLoading>
     </section>
   </div>
 </template>
