@@ -58,6 +58,7 @@
         :columns="TABLE_COLUMNS"
         :data-source="dataSource"
         :pagination="pagination"
+        :is-loading="loading"
         @page-change="onPageChange"
       >
         <template #header-actions>
@@ -146,6 +147,7 @@ function getDataSource(
 
 async function onPageChange(pageNum: number) {
   loading.value = true
+  dataSource.value = []
   try {
     const { pageSize } = pagination.value
     const { list, total } = await getDataSource(pageNum, pageSize)
