@@ -13,7 +13,33 @@
         :columns="columns"
         :data-source="dataSource"
         :scroll="{ x: tableScrollX, y: tableScrollY }"
-      ></a-table>
+        :pagination="{
+          showQuickJumper: false,
+          showSizeChanger: false,
+          showTotal: (total) => `共 ${total} 条`,
+          current: pagination.pageNum,
+          pageSize: pagination.pageSize,
+          total: pagination.total,
+          onChange: (pageNum) => emit('pageChange', pageNum)
+        }"
+      >
+        <!-- 表头单元格 -->
+        <template #headerCell="{ title, column }">
+          <slot name="thead-cell" :title="title" :column="column"></slot>
+        </template>
+        <!-- 列表单元格 -->
+        <template #bodyCell="{ text, value, record, index, column }">
+          <slot
+            name="tbody-cell"
+            :text="text"
+            :value="value"
+            :record="record"
+            :index="index"
+            :column="column"
+          ></slot>
+        </template>
+      </a-table>
+      <!-- 空数据状态 -->
       <template v-if="dataSource.length < 1">
         <section class="no-data">
           <CommonEmpty />
@@ -37,11 +63,15 @@ const props = withDefaults(
     title?: string
     columns?: ColumnItem[]
     dataSource?: unknown[]
+    pagination?: Pagination
+    isLoading?: boolean
   }>(),
   {
     title: 'CommonTable',
     columns: () => [],
-    dataSource: () => []
+    dataSource: () => [],
+    pagination: () => ({ pageNum: 1, pageSize: 20, total: 0 }),
+    isLoading: false
   }
 )
 
@@ -79,6 +109,8 @@ const tableScrollY = computed(() => {
   // 返回计算后的滚动高度（总高 - 表头高度 - 分页高度）
   return tableWrapperHeight - tableTheadHeight - tablePaginationHeight
 })
+
+const emit = defineEmits(['pageChange'])
 </script>
 
 <style lang="less" scoped>

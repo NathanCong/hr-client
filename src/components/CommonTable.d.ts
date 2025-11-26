@@ -4,5 +4,10 @@ interface ColumnItem {
   title: string
   fixed?: 'left' | 'right' | boolean
   width?: number
-  customRender?: function
+}
+
+interface Pagination {
+  pageNum: number
+  pageSize: number
+  total: number
 }

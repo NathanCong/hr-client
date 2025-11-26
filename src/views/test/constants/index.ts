@@ -71,6 +71,12 @@ export const FORM_FIELDS: FieldItem[] = [
  */
 export const TABLE_COLUMNS: ColumnItem[] = [
   {
+    key: 'column0',
+    dataIndex: 'column0',
+    title: '序号',
+    width: 100
+  },
+  {
     key: 'column1',
     dataIndex: 'column1',
     title: 'Column1'
@@ -99,6 +105,6 @@ export const TABLE_COLUMNS: ColumnItem[] = [
     key: 'actions',
     title: 'Actions',
     fixed: 'right',
-    width: 200
+    width: 220
   }
 ]

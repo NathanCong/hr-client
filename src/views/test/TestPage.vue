@@ -48,22 +48,49 @@
     </section>
     <!-- 测试 CommonTable -->
     <section class="test-table">
-      <CommonTable
-        title="测试表格"
-        :columns="TABLE_COLUMNS"
-        :data-source="dataSource"
-      >
-        <template #header-actions>
-          <a-button type="primary" style="margin-left: 8px">刷新列表</a-button>
-          <a-button type="primary" style="margin-left: 8px">新增项目</a-button>
-        </template>
-      </CommonTable>
+      <CommonLoading :is-loading="loading">
+        <div class="loading-inner">
+          <CommonTable
+            title="测试表格"
+            :columns="TABLE_COLUMNS"
+            :data-source="dataSource"
+            :pagination="pagination"
+            @page-change="onPageChange"
+          >
+            <template #header-actions>
+              <a-button type="primary" style="margin-left: 8px"
+                >刷新列表</a-button
+              >
+              <a-button type="primary" style="margin-left: 8px"
+                >新增项目</a-button
+              >
+            </template>
+            <template #thead-cell="{ title }">
+              <span class="thead-cell">{{ title }}</span>
+            </template>
+            <template #tbody-cell="{ column, text }">
+              <span class="tbody-cell">
+                <template v-if="column.key === 'actions'">
+                  <a-button type="link">查看</a-button>
+                  <a-button type="link">编辑</a-button>
+                  <a-button type="link">删除</a-button>
+                </template>
+                <template v-else-if="column.key === 'column5'">
+                  {{ dayjs(text).format('YYYY-MM-DD HH:mm:ss') }}
+                </template>
+                <template v-else>{{ text }}</template>
+              </span>
+            </template>
+          </CommonTable>
+        </div>
+      </CommonLoading>
     </section>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { onMounted, ref } from 'vue'
+import dayjs from 'dayjs'
 import CommonHeader from '@/components/CommonHeader.vue'
 import CommonLoading from '@/components/CommonLoading.vue'
 import CommonEmpty from '@/components/CommonEmpty.vue'
@@ -74,17 +101,68 @@ import { FORM_FIELDS, TABLE_COLUMNS } from './constants/index'
 
 const commonFormRef = ref()
 
-const dataSource = computed(() => {
-  // return []
-  return new Array(100).fill(null).map(() => {
-    const newItem: { [key: string]: unknown } = {}
-    TABLE_COLUMNS.forEach((item: ColumnItem) => {
-      if (typeof item.dataIndex === 'string') {
-        newItem[item.dataIndex] = item.key
-      }
-    })
-    return newItem
+const loading = ref(false)
+
+const pagination = ref({
+  pageNum: 1,
+  pageSize: 20,
+  total: 0
+})
+
+const dataSource = ref<unknown[]>([])
+
+function getDataSource(
+  pageNum: number,
+  pageSize: number
+): Promise<{
+  pageNum: number
+  pageSize: number
+  list: unknown[]
+  total: number
+}> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const list = new Array(pageSize).fill(null).map((_, index) => {
+        const newItem: { [key: string]: unknown } = {}
+        TABLE_COLUMNS.forEach((item: ColumnItem) => {
+          if (typeof item.dataIndex === 'string') {
+            if (item.dataIndex === 'column0') {
+              newItem[item.dataIndex] = (pageNum - 1) * pageSize + index + 1
+            } else if (item.dataIndex === 'column5') {
+              newItem[item.dataIndex] = dayjs()
+            } else {
+              newItem[item.dataIndex] = item.key
+            }
+          }
+        })
+        return newItem
+      })
+      resolve({
+        pageNum,
+        pageSize,
+        total: 100,
+        list
+      })
+    }, 1000)
   })
+}
+
+async function onPageChange(pageNum: number) {
+  loading.value = true
+  try {
+    const { pageSize } = pagination.value
+    const { list, total } = await getDataSource(pageNum, pageSize)
+    pagination.value = Object.assign({}, pagination.value, { pageNum, total })
+    dataSource.value = list
+  } catch (err) {
+    console.warn(err)
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  onPageChange(1)
 })
 
 function onReset() {
@@ -149,12 +227,22 @@ function onSubmit() {
   }
 
   .test-table {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0 20px;
-    height: 500px;
-    background-color: #fff;
     margin-top: 10px;
+
+    .loading-inner {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0 20px;
+      height: 500px;
+      background-color: #fff;
+
+      .thead-cell,
+      .tbody-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
   }
 }
 </style>
