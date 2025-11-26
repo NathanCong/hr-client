@@ -18,7 +18,7 @@
 <script lang="ts" setup>
 withDefaults(
   defineProps<{
-    mode: 'full' | 'auto'
+    mode?: 'full' | 'auto'
     isLoading?: boolean
     size?: 'default' | 'small' | 'large'
     tip?: string
