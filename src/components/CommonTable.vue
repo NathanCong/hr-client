@@ -10,48 +10,50 @@
     <!-- 表格主体 -->
     <section class="table-wrapper" ref="tableWrapperRef">
       <CommonLoading :is-loading="isLoading" size="default">
-        <a-table
-          :columns="columns"
-          :data-source="dataSource"
-          :scroll="{ x: tableScrollX, y: tableScrollY }"
-          :pagination="false"
-        >
-          <!-- 表头单元格 -->
-          <template #headerCell="{ title, column }">
-            <slot name="thead-cell" :title="title" :column="column"></slot>
+        <div class="loading-inner">
+          <a-table
+            :columns="columns"
+            :data-source="dataSource"
+            :scroll="{ x: tableScrollX, y: tableScrollY }"
+            :pagination="false"
+          >
+            <!-- 表头单元格 -->
+            <template #headerCell="{ title, column }">
+              <slot name="thead-cell" :title="title" :column="column"></slot>
+            </template>
+            <!-- 列表单元格 -->
+            <template #bodyCell="{ text, value, record, index, column }">
+              <slot
+                name="tbody-cell"
+                :text="text"
+                :value="value"
+                :record="record"
+                :index="index"
+                :column="column"
+              ></slot>
+            </template>
+          </a-table>
+          <!-- 表格分页 -->
+          <template v-if="dataSource.length > 0">
+            <section class="table-pagination">
+              <a-pagination
+                :current="pagination.pageNum"
+                :page-size="pagination.pageSize"
+                :show-quick-jumper="false"
+                :show-size-changer="false"
+                :show-total="(total: number) => `共 ${total} 条`"
+                :total="pagination.total"
+                @change="(pageNum: number) => emit('pageChange', pageNum)"
+              />
+            </section>
           </template>
-          <!-- 列表单元格 -->
-          <template #bodyCell="{ text, value, record, index, column }">
-            <slot
-              name="tbody-cell"
-              :text="text"
-              :value="value"
-              :record="record"
-              :index="index"
-              :column="column"
-            ></slot>
+          <!-- 数据空状态 -->
+          <template v-else>
+            <section class="table-empty">
+              <CommonEmpty />
+            </section>
           </template>
-        </a-table>
-        <!-- 表格分页 -->
-        <template v-if="dataSource.length > 0">
-          <section class="table-pagination">
-            <a-pagination
-              :current="pagination.pageNum"
-              :page-size="pagination.pageSize"
-              :show-quick-jumper="false"
-              :show-size-changer="false"
-              :show-total="(total: number) => `共 ${total} 条`"
-              :total="pagination.total"
-              @change="(pageNum: number) => emit('pageChange', pageNum)"
-            />
-          </section>
-        </template>
-        <!-- 数据空状态 -->
-        <template v-if="dataSource.length < 1">
-          <section class="table-empty">
-            <CommonEmpty />
-          </section>
-        </template>
+        </div>
       </CommonLoading>
     </section>
   </div>
@@ -96,13 +98,14 @@ watch(
         fixedWidth += column.width || 0
       }
     })
+    // 没有固定列，不处理
     if (fixedWidth < 1) {
+      tableScrollX.value = 0
       return
     }
+    // 有固定列，计算滚动宽度（总宽 + 固定列宽度）
     nextTick(() => {
-      // 获取 tableWrapper 元素宽度
       const tableWrapperWidth = getElementWidth(tableWrapperRef.value)
-      // 返回计算后的滚动宽度（总宽 + 固定列宽度）
       tableScrollX.value = tableWrapperWidth + fixedWidth
     })
   },
@@ -114,10 +117,12 @@ const tableScrollY = ref(0)
 watch(
   () => props.dataSource,
   (newDataSource) => {
-    // 没数据直接返回0
+    // 没数据，不处理
     if (newDataSource.length < 1) {
+      tableScrollY.value = 0
       return
     }
+    // 有数据，计算滚动高度（总高 - 表头高度 - 分页高度）
     nextTick(() => {
       // 获取 tableWrapper 元素高度
       const tableWrapperHeight = getElementHeight(tableWrapperRef.value)
@@ -129,9 +134,7 @@ watch(
       // 获取 tablePagination 元素高度
       const tablePaginationElement = getElementByClassName('table-pagination')
       const tablePaginationHeight = getElementHeight(tablePaginationElement)
-      console.log('tablePaginationElement', tablePaginationElement)
       console.log('tablePaginationHeight', tablePaginationHeight)
-      // 返回计算后的滚动高度（总高 - 表头高度 - 分页高度）
       tableScrollY.value =
         tableWrapperHeight - tableTheadHeight - tablePaginationHeight
     })
@@ -165,18 +168,23 @@ const emit = defineEmits(['pageChange'])
 
   .table-wrapper {
     flex: 1;
-    display: flex;
-    flex-direction: column;
 
-    .table-empty {
-      flex: 1;
-    }
-
-    .table-pagination {
+    .loading-inner {
+      width: 100%;
+      height: 100%;
       display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding: 16px 0;
+      flex-direction: column;
+
+      .table-empty {
+        flex: 1;
+      }
+
+      .table-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 16px 0;
+      }
     }
   }
 }
