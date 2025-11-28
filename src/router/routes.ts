@@ -6,15 +6,26 @@ export default [
    */
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/list'
   },
   /**
-   * 首页
+   * 列表页
    */
   {
-    path: '/home',
-    name: 'home',
-    component: () => import('@/views/home/HomePage.vue'),
+    path: '/list',
+    name: 'list',
+    component: () => import('@/views/list/ListView.vue'),
+    meta: {
+      layoutComponent: DefaultLayout
+    }
+  },
+  /**
+   * 详情页
+   */
+  {
+    path: '/detail/:empId',
+    name: 'detail',
+    component: () => import('@/views/detail/DetailView.vue'),
     meta: {
       layoutComponent: DefaultLayout
     }

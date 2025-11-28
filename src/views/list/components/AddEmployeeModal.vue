@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import GlobalForm from '@/components/GlobalForm'
-import { ADD_EMPLOYEE_FORM_FIELDS } from '../const'
+import { ADD_EMPLOYEE_FORM_FIELDS } from '../constants'
 import { addEmployee } from '@/apis'
 import { notification } from 'ant-design-vue'
 

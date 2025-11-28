@@ -1,7 +1,13 @@
+/**
+ * 通过 className 获取元素
+ */
 export function getElementByClassName(className: string) {
   return document.querySelector(`.${className}`)
 }
 
+/**
+ * 获取元素宽度
+ */
 export function getElementWidth(element: Element | null) {
   if (!element) {
     return 0
@@ -13,6 +19,9 @@ export function getElementWidth(element: Element | null) {
   return width + marginLeft + marginRight
 }
 
+/**
+ * 获取元素高度
+ */
 export function getElementHeight(element: Element | null) {
   if (!element) {
     return 0
