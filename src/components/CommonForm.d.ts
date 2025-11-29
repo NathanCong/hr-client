@@ -2,14 +2,16 @@ interface FieldItem {
   key: string
   name: string
   label: string
-  type: 'input' | 'textarea' | 'dateRange'
-  value?: never
-  defaultValue?: never
+  type: 'input' | 'textarea' | 'date' | 'dateRange' | 'select'
+  value?: any
+  defaultValue?: any
   rules?: Array<{ required?: boolean; message?: string }>
   options?: {
     placeholder?: string
     width?: string
     height?: string
+    addonBefore?: string
+    allowClear?: boolean
   }
 }
 
@@ -19,5 +21,5 @@ interface FieldRow {
 }
 
 interface FormState {
-  [key: string]: undefined | never
+  [key: string]: any
 }

@@ -36,7 +36,7 @@ export default [
   {
     path: '/test',
     name: 'test',
-    component: () => import('@/views/test/TestPage.vue'),
+    component: () => import('@/views/test/TestView.vue'),
     meta: {
       layoutComponent: BlankLayout
     }

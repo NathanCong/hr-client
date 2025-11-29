@@ -1,12 +1,12 @@
 import typescriptParser from '@typescript-eslint/parser'
-import vueEslintConfig from 'eslint-plugin-vue'
-import vueTypescriptEslintConfig from '@vue/eslint-config-typescript'
-import vuePrettierEslintConfig from '@vue/eslint-config-prettier'
+import pluginVue from 'eslint-plugin-vue'
+import {
+  defineConfigWithVueTs,
+  vueTsConfigs
+} from '@vue/eslint-config-typescript'
+import vuePrettierConfig from '@vue/eslint-config-prettier'
 
-export default [
-  {
-    ignores: ['.husky/', 'dist/', 'node_modules/']
-  },
+export default defineConfigWithVueTs(
   {
     files: ['**/*.{ts,vue}'],
     languageOptions: {
@@ -18,17 +18,21 @@ export default [
         project: ['./tsconfig.json']
       }
     },
-    rules: {
-      // 你可以在这里添加自定义规则
-    },
     linterOptions: {
       reportUnusedDisableDirectives: true
     }
   },
   // Vue 3 推荐规则
-  ...vueEslintConfig.configs['flat/essential'],
+  pluginVue.configs['flat/essential'],
   // Vue TypeScript 配置
-  ...vueTypescriptEslintConfig(),
+  vueTsConfigs.recommended,
   // Vue Prettier 配置
-  vuePrettierEslintConfig
-]
+  vuePrettierConfig,
+  // 自定义配置
+  {
+    ignores: ['.husky/', 'dist/', 'node_modules/'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'warn'
+    }
+  }
+)

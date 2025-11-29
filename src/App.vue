@@ -1,8 +1,8 @@
 <template>
   <a-config-provider :locale="zhCN">
     <div class="app app-font">
-      <template v-if="route.meta.layoutComponent">
-        <component :is="route.meta.layoutComponent">
+      <template v-if="isUseLayout">
+        <component :is="layoutComponent">
           <router-view></router-view>
         </component>
       </template>
@@ -14,11 +14,19 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 
-// 定义 states
 const route = useRoute()
+
+const isUseLayout = computed(() => {
+  return Boolean(route.meta.layoutComponent)
+})
+
+const layoutComponent = computed(() => {
+  return route.meta.layoutComponent
+})
 </script>
 
 <style lang="less" scoped>

@@ -41,15 +41,16 @@
         :wrapper-col="{ span: 24 }"
         :fields="FORM_FIELDS"
         ref="commonFormRef"
-      />
-      <section class="form-buttons">
-        <a-button type="default" style="margin-left: 8px" @click="onReset">
-          重置
-        </a-button>
-        <a-button type="primary" style="margin-left: 8px" @click="onSubmit">
-          提交
-        </a-button>
-      </section>
+      >
+        <template #actions>
+          <a-button type="default" style="margin-left: 8px" @click="onReset">
+            重置
+          </a-button>
+          <a-button type="primary" style="margin-left: 8px" @click="onSubmit">
+            提交
+          </a-button>
+        </template>
+      </CommonForm>
     </section>
     <!-- 测试 CommonTable -->
     <section class="test-table">
@@ -222,11 +223,6 @@ function onSubmit() {
     margin-top: 10px;
     display: flex;
     flex-direction: column;
-
-    .form-buttons {
-      display: flex;
-      justify-content: flex-end;
-    }
   }
 
   .test-table {

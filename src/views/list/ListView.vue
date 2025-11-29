@@ -1,90 +1,127 @@
 <template>
-  <div class="home">
-    <section class="form-wrapper" v-if="false">GlobalForm</section>
-    <section class="list-wrapper">
-      <LoadingMask v-if="tableLoading" />
-      <GlobalTable
-        :columns="EMPLOYEE_LIST_TABLE_COLUMNS"
-        :dataSource="dataSource"
-        :total="total"
+  <div class="list">
+    <section class="form-wrapper">
+      <CommonForm
+        layout="vertical"
+        :colon="true"
+        :col-number="4"
+        :label-col="{ span: 24 }"
+        :wrapper-col="{ span: 24 }"
+        :fields="EMPLOYEES_FORM_FIELDS"
+        ref="commonFormRef"
       >
-        <template #header>
-          <div class="table-header">
-            <div class="table-title">员工列表</div>
-            <div class="table-buttons">
-              <a-button type="primary" size="middle" @click="onAddEmployee">
-                <template #icon><PlusOutlined /></template>
-                添加新员工
-              </a-button>
-            </div>
-          </div>
+        <template #actions>
+          <a-button type="default" style="margin-left: 8px" @click="onReset">
+            <template #icon><ReloadOutlined /></template>重置
+          </a-button>
+          <a-button type="primary" style="margin-left: 8px" @click="onSearch">
+            <template #icon><SearchOutlined /></template>搜索
+          </a-button>
         </template>
-        <template #cell="{ column }">
-          <template v-if="column.key === 'actions'">
-            <div class="cell-links">
-              <a-button type="link">查看</a-button>
-              <a-button type="link">编辑</a-button>
-              <a-button type="link">删除</a-button>
-            </div>
-          </template>
-        </template>
-      </GlobalTable>
+      </CommonForm>
     </section>
-    <AddEmployeeModal ref="addEmployeeModalRef" @finish="onAddEmployeeFinish" />
+    <section class="list-wrapper">
+      <CommonTable
+        title="员工列表"
+        :columns="EMPLOYEES_TABLE_COLUMNS"
+        :dataSource="dataSource"
+        :pagination="pagination"
+        :isLoading="requestLoading"
+        @pageChange="onPageChange"
+      >
+        <template #header-actions>
+          <a-button type="primary" @click="onModalOpen">
+            <template #icon><PlusOutlined /></template>添加新员工
+          </a-button>
+        </template>
+        <template #thead-cell="{ title }">
+          <span class="thead-cell">{{ title }}</span>
+        </template>
+        <template #tbody-cell="{ column, text }">
+          <span class="tbody-cell">
+            <template v-if="column.key === 'actions'">
+              <span class="action-links">
+                <a-button type="link">查看</a-button>
+                <a-button type="link">删除</a-button>
+              </span>
+            </template>
+            <template v-else>{{ text || '——' }}</template>
+          </span>
+        </template>
+      </CommonTable>
+    </section>
+    <AddEmployeeModal ref="addEmployeeModalRef" @afterAdd="onModalAfterAdd" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import { PlusOutlined } from '@ant-design/icons-vue'
-import GlobalTable from '@/components/GlobalTable'
-import LoadingMask from '@/components/LoadingMask.vue'
-import { EMPLOYEE_LIST_TABLE_COLUMNS } from './constants'
-import { getEmployeeList } from '@/apis'
+import {
+  ReloadOutlined,
+  SearchOutlined,
+  PlusOutlined
+} from '@ant-design/icons-vue'
+import { CommonForm, CommonTable } from '@/components/index'
+import { EMPLOYEES_FORM_FIELDS, EMPLOYEES_TABLE_COLUMNS } from './constants'
+import { getEmployees } from '@/apis'
 import { notification } from 'ant-design-vue'
 import AddEmployeeModal from './components/AddEmployeeModal.vue'
 
-const tableLoading = ref(false)
-const dataSource = ref<EmployeeListItem[]>([])
-const total = ref(0)
-const addEmployeeModalRef = ref<InstanceType<typeof AddEmployeeModal>>()
+const requestLoading = ref(false)
+const commonFormRef = ref<InstanceType<typeof CommonForm>>()
+const dataSource = ref<EmployeeItem[]>([])
+const pagination = ref<Pagination>({ pageNum: 1, pageSize: 20, total: 0 })
 
-async function getTableDataSource() {
-  tableLoading.value = true
+async function requestEmployees(pageNum: number) {
+  requestLoading.value = true
   try {
-    const res = await getEmployeeList()
-    const { success, message, data } = res.data as GetEmployeeListResponse
+    const params = await commonFormRef.value?.submit()
+    console.log('params', params)
+    const res = await getEmployees()
+    const { success, message, data } = res.data
     if (!success) {
-      notification.error({ message: '获取失败', description: message })
+      notification.error({ message: '获取员工列表失败', description: message })
       return
     }
-    dataSource.value = data.list
-    total.value = data.total
+    const { list, total = 0 } = data
+    dataSource.value = list
+    pagination.value = { ...pagination.value, pageNum, total }
   } catch (err) {
-    notification.error({
-      message: '获取失败',
-      description: err instanceof Error ? err.message : undefined
-    })
+    console.error(err)
   } finally {
-    tableLoading.value = false
+    requestLoading.value = false
   }
 }
 
-function onAddEmployee() {
+function onReset() {
+  commonFormRef.value?.resetFields()
+}
+
+async function onSearch() {
+  requestEmployees(1)
+}
+
+function onPageChange(pageNum: number) {
+  requestEmployees(pageNum)
+}
+
+const addEmployeeModalRef = ref<InstanceType<typeof AddEmployeeModal>>()
+
+function onModalOpen() {
   addEmployeeModalRef.value?.open()
 }
 
-function onAddEmployeeFinish() {
-  getTableDataSource()
+function onModalAfterAdd() {
+  onSearch()
 }
 
 onMounted(() => {
-  getTableDataSource()
+  onSearch()
 })
 </script>
 
 <style lang="less" scoped>
-.home {
+.list {
   width: 100%;
   height: 100%;
   display: flex;
@@ -108,24 +145,19 @@ onMounted(() => {
 
   .list-wrapper {
     flex: 1;
+    padding: 0 16px;
     position: relative;
 
-    .table-header {
+    .thead-cell,
+    .tbody-cell {
       display: flex;
-      flex-direction: row;
       align-items: center;
-      justify-content: space-between;
-
-      .table-title {
-        font-size: 16px;
-        font-weight: bold;
-      }
+      justify-content: center;
     }
 
-    .cell-links {
+    .action-links {
       display: flex;
       align-items: center;
-      justify-content: space-between;
     }
   }
 }

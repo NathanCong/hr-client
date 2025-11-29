@@ -26,7 +26,8 @@
                       width: fieldCol.options?.width || '100%',
                       height: fieldCol.options?.height || 'auto'
                     }"
-                    allowClear
+                    :allow-clear="fieldCol.options?.allowClear"
+                    :addon-before="fieldCol.options?.addonBefore"
                   />
                 </template>
                 <!-- Textarea 组件 -->
@@ -38,7 +39,19 @@
                       width: fieldCol.options?.width || '100%',
                       height: fieldCol.options?.height || 'auto'
                     }"
-                    allowClear
+                    :allow-clear="fieldCol.options?.allowClear"
+                  />
+                </template>
+                <!-- Date 组件 -->
+                <template v-if="fieldCol.type === 'date'">
+                  <a-date-picker
+                    v-model:value="formState[fieldCol.name]"
+                    :placeholder="fieldCol.options?.placeholder"
+                    :style="{
+                      width: fieldCol.options?.width || '100%',
+                      height: fieldCol.options?.height || 'auto'
+                    }"
+                    :allow-clear="fieldCol.options?.allowClear"
                   />
                 </template>
                 <!-- DateRange 组件 -->
@@ -49,7 +62,7 @@
                       width: fieldCol.options?.width || '100%',
                       height: fieldCol.options?.height || 'auto'
                     }"
-                    allowClear
+                    :allow-clear="fieldCol.options?.allowClear"
                   />
                 </template>
               </a-form-item>
@@ -58,6 +71,9 @@
         </a-row>
       </template>
     </a-form>
+    <section class="form-actions">
+      <slot name="actions"></slot>
+    </section>
   </div>
 </template>
 
@@ -137,5 +153,10 @@ defineExpose({
 .common-form {
   width: 100%;
   height: 100%;
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 </style>

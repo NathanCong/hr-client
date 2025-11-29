@@ -1,49 +1,139 @@
-export const EMPLOYEE_LIST_TABLE_COLUMNS: TableColumn[] = [
+/**
+ * 员工搜索 Form Fields
+ */
+export const EMPLOYEES_FORM_FIELDS: FieldItem[] = [
   {
-    title: '员工ID',
-    dataIndex: 'empId',
     key: 'empId',
-    width: 120
+    name: 'empId',
+    label: '员工编号',
+    type: 'input',
+    options: {
+      placeholder: '请输入员工编号',
+      addonBefore: 'HE',
+      allowClear: true
+    }
   },
-  {
-    title: '员工姓名',
-    dataIndex: 'empName',
-    key: 'empName'
-  },
-  {
-    title: '员工邮箱',
-    dataIndex: 'empEmail',
-    key: 'empEmail'
-  },
-  {
-    title: '创建时间',
-    dataIndex: 'createTime',
-    key: 'createTime'
-  },
-  {
-    title: '操作',
-    dataIndex: 'actions',
-    key: 'actions',
-    width: 200,
-    fixed: 'right'
-  }
-]
-
-export const ADD_EMPLOYEE_FORM_FIELDS: FormItem[] = [
   {
     key: 'empName',
     name: 'empName',
     label: '员工姓名',
-    rules: [{ required: true, message: '员工姓名不能为空' }],
-    placeholder: '请输入员工姓名',
-    type: 'input'
+    type: 'input',
+    options: {
+      placeholder: '请输入员工姓名',
+      allowClear: true
+    }
   },
   {
     key: 'empEmail',
     name: 'empEmail',
     label: '员工邮箱',
+    type: 'input',
+    options: {
+      placeholder: '请输入员工邮箱',
+      allowClear: true
+    }
+  },
+  {
+    key: 'empStatus',
+    name: 'empStatus',
+    label: '员工状态',
+    type: 'select',
+    options: {
+      placeholder: '请选择员工状态',
+      allowClear: true
+    }
+  }
+]
+
+/**
+ * 员工列表 Table Columns
+ */
+export const EMPLOYEES_TABLE_COLUMNS: ColumnItem[] = [
+  {
+    key: 'empId',
+    dataIndex: 'empId',
+    title: '员工编号'
+  },
+  {
+    key: 'empName',
+    dataIndex: 'empName',
+    title: '员工姓名'
+  },
+  {
+    key: 'empEmail',
+    dataIndex: 'empEmail',
+    title: '员工邮箱'
+  },
+  {
+    key: 'empStatus',
+    dataIndex: 'empStatus',
+    title: '员工状态'
+  },
+  {
+    key: 'creator',
+    dataIndex: 'creator',
+    title: '创建人'
+  },
+  {
+    key: 'createTime',
+    dataIndex: 'createTime',
+    title: '创建时间'
+  },
+  {
+    key: 'modifier',
+    dataIndex: 'modifier',
+    title: '修改人'
+  },
+  {
+    key: 'modifyTime',
+    dataIndex: 'modifyTime',
+    title: '修改时间'
+  },
+  {
+    title: '操作',
+    dataIndex: 'actions',
+    key: 'actions',
+    width: 160,
+    fixed: 'right'
+  }
+]
+
+/**
+ * 添加员工 Form Fields
+ */
+export const ADD_EMPLOYEE_FORM_FIELDS: FieldItem[] = [
+  {
+    key: 'empId',
+    name: 'empId',
+    label: '员工编号',
+    type: 'input',
+    rules: [{ required: true, message: '员工编号不能为空' }],
+    options: {
+      placeholder: '请输入员工编号',
+      addonBefore: 'HE',
+      allowClear: true
+    }
+  },
+  {
+    key: 'empName',
+    name: 'empName',
+    label: '员工姓名',
+    type: 'input',
+    rules: [{ required: true, message: '员工姓名不能为空' }],
+    options: {
+      placeholder: '请输入员工姓名',
+      allowClear: true
+    }
+  },
+  {
+    key: 'empEmail',
+    name: 'empEmail',
+    label: '员工邮箱',
+    type: 'input',
     rules: [{ required: true, message: '员工邮箱不能为空' }],
-    placeholder: '请输入员工邮箱',
-    type: 'input'
+    options: {
+      placeholder: '请输入员工邮箱',
+      allowClear: true
+    }
   }
 ]

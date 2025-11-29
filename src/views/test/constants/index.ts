@@ -24,6 +24,16 @@ export const FORM_FIELDS: FieldItem[] = [
     }
   },
   {
+    key: 'date1',
+    name: 'date1',
+    label: 'Date1',
+    type: 'date',
+    rules: [{ required: true, message: 'Date1 不能为空' }],
+    options: {
+      placeholder: '请选择日期'
+    }
+  },
+  {
     key: 'dateRange1',
     name: 'dateRange1',
     label: 'DateRange1',
@@ -31,16 +41,6 @@ export const FORM_FIELDS: FieldItem[] = [
     rules: [{ required: true, message: 'DateRange1 不能为空' }],
     options: {
       placeholder: '请选择日期范围'
-    }
-  },
-  {
-    key: 'input2',
-    name: 'input2',
-    label: 'Input2',
-    type: 'input',
-    rules: [{ required: true, message: 'Input2 不能为空' }],
-    options: {
-      placeholder: '请输入内容'
     }
   },
   {

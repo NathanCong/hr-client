@@ -7,24 +7,26 @@
     @cancel="onCancel"
   >
     <div class="form-wrapper">
-      <GlobalForm ref="modalFormRef" :form-config="modalFormConfig" />
+      <CommonForm
+        layout="horizontal"
+        :colon="true"
+        :label-col="{ span: 4 }"
+        :wrapper-col="{ span: 20 }"
+        :fields="ADD_EMPLOYEE_FORM_FIELDS"
+        ref="commonFormRef"
+      />
     </div>
   </a-modal>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import GlobalForm from '@/components/GlobalForm'
+import { CommonForm } from '@/components/index'
 import { ADD_EMPLOYEE_FORM_FIELDS } from '../constants'
 import { addEmployee } from '@/apis'
 import { notification } from 'ant-design-vue'
 
 const modalVisible = ref(false)
-const modalFormConfig = ref<FormConfig>({
-  fields: ADD_EMPLOYEE_FORM_FIELDS
-})
-const modalFormRef = ref<InstanceType<typeof GlobalForm>>()
-const emit = defineEmits(['finish'])
 
 function open() {
   modalVisible.value = true
@@ -34,32 +36,32 @@ function close() {
   modalVisible.value = false
 }
 
+defineExpose({ open, close })
+
+const commonFormRef = ref<InstanceType<typeof CommonForm>>()
+const emit = defineEmits(['afterAdd'])
+
 async function onOk() {
   try {
-    const params = await modalFormRef.value?.submit()
+    const params = await commonFormRef.value?.submit()
+    console.log('onOk', params)
     const res = await addEmployee(params)
-    const { success, message } = res.data as AddEmployeeResponse
+    const { success, message } = res.data
     if (!success) {
       notification.error({ message: '处理失败', description: message })
       return
     }
     notification.success({ message: '处理成功', description: '已添加新员工' })
     close()
+    emit('afterAdd')
   } catch (err) {
-    notification.error({
-      message: '处理失败',
-      description: err instanceof Error ? err.message : undefined
-    })
-  } finally {
-    emit('finish')
+    console.error(err)
   }
 }
 
 function onCancel() {
   close()
 }
-
-defineExpose({ open, close })
 </script>
 
 <style lang="less" scoped>
