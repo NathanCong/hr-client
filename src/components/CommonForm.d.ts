@@ -11,7 +11,9 @@ interface FieldItem {
     width?: string
     height?: string
     addonBefore?: string
+    options?: Array<{ value: string; label: string }>
     allowClear?: boolean
+    disabled?: boolean
   }
 }
 

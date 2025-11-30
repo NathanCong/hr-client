@@ -26,8 +26,9 @@
                       width: fieldCol.options?.width || '100%',
                       height: fieldCol.options?.height || 'auto'
                     }"
-                    :allow-clear="fieldCol.options?.allowClear"
                     :addon-before="fieldCol.options?.addonBefore"
+                    :allow-clear="fieldCol.options?.allowClear"
+                    :disabled="fieldCol.options?.disabled"
                   />
                 </template>
                 <!-- Textarea 组件 -->
@@ -40,6 +41,7 @@
                       height: fieldCol.options?.height || 'auto'
                     }"
                     :allow-clear="fieldCol.options?.allowClear"
+                    :disabled="fieldCol.options?.disabled"
                   />
                 </template>
                 <!-- Date 组件 -->
@@ -52,6 +54,7 @@
                       height: fieldCol.options?.height || 'auto'
                     }"
                     :allow-clear="fieldCol.options?.allowClear"
+                    :disabled="fieldCol.options?.disabled"
                   />
                 </template>
                 <!-- DateRange 组件 -->
@@ -63,7 +66,23 @@
                       height: fieldCol.options?.height || 'auto'
                     }"
                     :allow-clear="fieldCol.options?.allowClear"
+                    :disabled="fieldCol.options?.disabled"
                   />
+                </template>
+                <!-- Select 组件 -->
+                <template v-if="fieldCol.type === 'select'">
+                  <a-select
+                    v-model:value="formState[fieldCol.name]"
+                    :placeholder="fieldCol.options?.placeholder"
+                    :style="{
+                      width: fieldCol.options?.width || '100%',
+                      height: fieldCol.options?.height || 'auto'
+                    }"
+                    :options="fieldCol.options?.options"
+                    :allow-clear="fieldCol.options?.allowClear"
+                    :disabled="fieldCol.options?.disabled"
+                  >
+                  </a-select>
                 </template>
               </a-form-item>
             </a-col>
