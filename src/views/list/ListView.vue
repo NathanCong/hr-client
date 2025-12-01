@@ -37,12 +37,16 @@
         <template #thead-cell="{ title }">
           <span class="thead-cell">{{ title }}</span>
         </template>
-        <template #tbody-cell="{ column, text }">
+        <template #tbody-cell="{ column, text, record }">
           <span class="tbody-cell">
             <template v-if="column.key === 'actions'">
               <span class="action-links">
-                <a-button type="link">查看</a-button>
-                <a-button type="link">删除</a-button>
+                <a-button type="link" @click="onDetail(record.empId)">
+                  查看
+                </a-button>
+                <a-button type="link" @click="onDelete(record.empId)">
+                  删除
+                </a-button>
               </span>
             </template>
             <template v-else>{{ text || '——' }}</template>
@@ -56,6 +60,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import {
   ReloadOutlined,
   SearchOutlined,
@@ -113,6 +118,16 @@ function onModalOpen() {
 
 function onModalAfterAdd() {
   onSearch()
+}
+
+const router = useRouter()
+
+function onDetail(empId: string) {
+  router.replace({ path: `/detail/${empId}` })
+}
+
+function onDelete(empId: string) {
+  console.log('onDelete empId', empId)
 }
 
 onMounted(() => {

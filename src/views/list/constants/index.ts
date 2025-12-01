@@ -135,5 +135,16 @@ export const ADD_EMPLOYEE_FORM_FIELDS: FieldItem[] = [
       placeholder: '请输入员工邮箱',
       allowClear: true
     }
+  },
+  {
+    key: 'empStatus',
+    name: 'empStatus',
+    label: '员工状态',
+    type: 'select',
+    rules: [{ required: true, message: '员工状态不能为空' }],
+    options: {
+      placeholder: '请选择员工状态',
+      allowClear: true
+    }
   }
 ]
