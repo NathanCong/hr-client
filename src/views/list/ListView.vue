@@ -39,7 +39,10 @@
         </template>
         <template #tbody-cell="{ column, text, record }">
           <span class="tbody-cell">
-            <template v-if="column.key === 'actions'">
+            <template v-if="column.key === 'empStatus'">
+              {{ EMPLOYEE_STATUS_MAP[text] }}
+            </template>
+            <template v-else-if="column.key === 'actions'">
               <span class="action-links">
                 <a-button type="link" @click="onDetail(record.empId)">
                   查看
@@ -68,8 +71,9 @@ import {
 } from '@ant-design/icons-vue'
 import { CommonForm, CommonTable } from '@/components/index'
 import { EMPLOYEES_FORM_FIELDS, EMPLOYEES_TABLE_COLUMNS } from './constants'
+import { EMPLOYEE_STATUS_MAP } from '@/constants/index'
 import { getEmployees, delEmployee } from '@/apis'
-import { notification } from 'ant-design-vue'
+import { notification, Modal } from 'ant-design-vue'
 import AddEmployeeModal from './components/AddEmployeeModal.vue'
 
 const requestLoading = ref(false)
@@ -83,12 +87,12 @@ function onReset() {
 
 async function queryEmployees(pageNum: number) {
   requestLoading.value = true
+  const { pageSize } = pagination.value
   try {
     const params = await commonFormRef.value?.submit()
-    const requestParams = {
-      ...params,
-      pageNum,
-      pageSize: pagination.value.pageSize
+    const requestParams: GetEmployeesRequest = { pageNum, pageSize, ...params }
+    if (requestParams.empId) {
+      requestParams.empId = `HE${requestParams.empId}`
     }
     const response = await getEmployees(requestParams)
     const { success, message, data } = response.data
@@ -149,7 +153,14 @@ async function deleteEmployee(empId: string) {
 }
 
 function onDelete(empId: string) {
-  deleteEmployee(empId)
+  Modal.confirm({
+    centered: true,
+    title: '删除员工确认',
+    content: `确定要删除编号为 ${empId} 的员工吗？`,
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => deleteEmployee(empId)
+  })
 }
 
 onMounted(() => {

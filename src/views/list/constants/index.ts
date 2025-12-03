@@ -84,22 +84,26 @@ export const EMPLOYEES_TABLE_COLUMNS: ColumnItem[] = [
   {
     key: 'creator',
     dataIndex: 'creator',
-    title: '创建人'
+    title: '创建人',
+    width: 240
   },
   {
     key: 'createTime',
     dataIndex: 'createTime',
-    title: '创建时间'
+    title: '创建时间',
+    width: 180
   },
   {
     key: 'modifier',
     dataIndex: 'modifier',
-    title: '修改人'
+    title: '修改人',
+    width: 240
   },
   {
     key: 'modifyTime',
     dataIndex: 'modifyTime',
-    title: '修改时间'
+    title: '修改时间',
+    width: 180
   },
   {
     title: '操作',

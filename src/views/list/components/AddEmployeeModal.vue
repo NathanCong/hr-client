@@ -3,6 +3,7 @@
     v-model:open="modalVisible"
     title="添加员工"
     :destroyOnClose="true"
+    :centered="true"
     @ok="onOk"
     @cancel="onCancel"
   >
@@ -45,12 +46,12 @@ async function onOk() {
   try {
     const params = await commonFormRef.value?.submit()
     const requestParams: AddEmployeeRequest = {
-      empId: '',
       empName: '',
       empEmail: '',
       empStatus: '',
-      creator: '丛雨楠<congyunan@126.com>',
-      ...params
+      ...params,
+      empId: `HE${params?.empId}`,
+      creator: '丛雨楠<congyunan@126.com>'
     }
     const res = await addEmployee(requestParams)
     const { success, message } = res.data
