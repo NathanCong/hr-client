@@ -34,6 +34,7 @@ const layoutComponent = computed(() => {
   width: 100%;
   height: 100vh;
   min-width: 1200px;
+  min-height: 600px;
 }
 
 .app-font {
