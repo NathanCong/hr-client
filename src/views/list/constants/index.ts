@@ -1,3 +1,14 @@
+import { EMPLOYEE_STATUS_MAP } from '@/constants/index'
+
+function getEmployeeStatusOptions() {
+  return Object.keys(EMPLOYEE_STATUS_MAP).map((key) => {
+    return {
+      value: key,
+      label: EMPLOYEE_STATUS_MAP[Number(key)]
+    }
+  })
+}
+
 /**
  * 员工搜索 Form Fields
  */
@@ -40,6 +51,7 @@ export const EMPLOYEES_FORM_FIELDS: FieldItem[] = [
     type: 'select',
     options: {
       placeholder: '请选择员工状态',
+      options: getEmployeeStatusOptions(),
       allowClear: true
     }
   }
@@ -144,6 +156,7 @@ export const ADD_EMPLOYEE_FORM_FIELDS: FieldItem[] = [
     rules: [{ required: true, message: '员工状态不能为空' }],
     options: {
       placeholder: '请选择员工状态',
+      options: getEmployeeStatusOptions(),
       allowClear: true
     }
   }

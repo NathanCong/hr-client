@@ -44,8 +44,15 @@ const emit = defineEmits(['afterAdd'])
 async function onOk() {
   try {
     const params = await commonFormRef.value?.submit()
-    console.log('onOk', params)
-    const res = await addEmployee(params)
+    const requestParams: AddEmployeeRequest = {
+      empId: '',
+      empName: '',
+      empEmail: '',
+      empStatus: '',
+      creator: '丛雨楠<congyunan@126.com>',
+      ...params
+    }
+    const res = await addEmployee(requestParams)
     const { success, message } = res.data
     if (!success) {
       notification.error({ message: '处理失败', description: message })

@@ -68,7 +68,7 @@ import {
 } from '@ant-design/icons-vue'
 import { CommonForm, CommonTable } from '@/components/index'
 import { EMPLOYEES_FORM_FIELDS, EMPLOYEES_TABLE_COLUMNS } from './constants'
-import { getEmployees } from '@/apis'
+import { getEmployees, delEmployee } from '@/apis'
 import { notification } from 'ant-design-vue'
 import AddEmployeeModal from './components/AddEmployeeModal.vue'
 
@@ -77,13 +77,21 @@ const commonFormRef = ref<InstanceType<typeof CommonForm>>()
 const dataSource = ref<EmployeeItem[]>([])
 const pagination = ref<Pagination>({ pageNum: 1, pageSize: 20, total: 0 })
 
-async function requestEmployees(pageNum: number) {
+function onReset() {
+  commonFormRef.value?.resetFields()
+}
+
+async function queryEmployees(pageNum: number) {
   requestLoading.value = true
   try {
     const params = await commonFormRef.value?.submit()
-    console.log('params', params)
-    const res = await getEmployees()
-    const { success, message, data } = res.data
+    const requestParams = {
+      ...params,
+      pageNum,
+      pageSize: pagination.value.pageSize
+    }
+    const response = await getEmployees(requestParams)
+    const { success, message, data } = response.data
     if (!success) {
       notification.error({ message: '获取员工列表失败', description: message })
       return
@@ -98,16 +106,12 @@ async function requestEmployees(pageNum: number) {
   }
 }
 
-function onReset() {
-  commonFormRef.value?.resetFields()
-}
-
 async function onSearch() {
-  requestEmployees(1)
+  queryEmployees(1)
 }
 
 function onPageChange(pageNum: number) {
-  requestEmployees(pageNum)
+  queryEmployees(pageNum)
 }
 
 const addEmployeeModalRef = ref<InstanceType<typeof AddEmployeeModal>>()
@@ -126,8 +130,26 @@ function onDetail(empId: string) {
   router.replace({ path: `/detail/${empId}` })
 }
 
+async function deleteEmployee(empId: string) {
+  requestLoading.value = true
+  try {
+    const response = await delEmployee({ empId })
+    const { success, message } = response.data
+    if (!success) {
+      notification.error({ message: '删除员工失败', description: message })
+      return
+    }
+    notification.success({ message: '删除员工成功' })
+    onSearch()
+  } catch (err) {
+    console.error(err)
+  } finally {
+    requestLoading.value = false
+  }
+}
+
 function onDelete(empId: string) {
-  console.log('onDelete empId', empId)
+  deleteEmployee(empId)
 }
 
 onMounted(() => {
