@@ -7,7 +7,7 @@ import type { AxiosResponse } from 'axios'
 export function getEmployees(
   params: GetEmployeesRequest
 ): Promise<AxiosResponse<GetEmployeesResponse>> {
-  return get('/getEmployees', params)
+  return get('/employee/search', params)
 }
 
 /**
@@ -16,7 +16,7 @@ export function getEmployees(
 export function addEmployee(
   data: AddEmployeeRequest
 ): Promise<AxiosResponse<AddEmployeeResponse>> {
-  return post('/addEmployee', data)
+  return post('/employee/insert', data)
 }
 
 /**
@@ -25,5 +25,5 @@ export function addEmployee(
 export function delEmployee(
   data: DelEmployeeRequest
 ): Promise<AxiosResponse<DelEmployeeResponse>> {
-  return post('/delEmployee', data)
+  return post('/employee/delete', data)
 }
